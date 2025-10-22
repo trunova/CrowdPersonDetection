@@ -1,7 +1,7 @@
 # Crowd Person Detection (Video)
 
 Детектирование людей и отображение их сегментационных масок на видео (`crowd.mp4`) с использованием Python и Ultralytics YOLO или YOLO + SAM.
-Создаёт выходное видео с наложенными рамками/масками, именами классов и уровнями достоверности. Видео в полном масштабе и качестве можно найти в этом репозитории по пути **output/out.mp4**.
+Создаёт выходное видео с наложенными рамками/масками, именами классов и уровнями достоверности. Видео в полном масштабе и качестве можно найти в этом репозитории по пути **output/out.mp4** и **output/out_sam.mp4**.
 
 ![Video Description](output/sam_output_video.gif)
 
@@ -40,6 +40,8 @@ python -m src.main --video input/crowd.mp4 --out output/out_sam.mp4 --model yolo
 ├── output
     ├── out.mp4
     ├── output_video.gif
+    ├── out_sam.mp4
+    ├── sam_output_video.gif
 └── src
     ├── main.py          # entry point
     ├── detector.py      # YOLO wrapper
