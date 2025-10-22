@@ -21,21 +21,18 @@ from .visualize import draw_bbox_with_label, draw_transparent_mask
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Crowd Person Detection")
-    parser.add_argument("--video", type=str, default="input/crowd.mp4", help="Path to input video (e.g., crowd.mp4)")
+    parser.add_argument("--video", type=str, default="input/crowd.mp4", help="Path to input video")
     parser.add_argument("--out", type=str, default="output/out.mp4", help="Path to output annotated video")
-    parser.add_argument("--model", type=str, default="yolo11n-seg.pt", help="YOLO weights (e.g., yolo11s.pt or yolo11s-seg.pt)")
+    parser.add_argument("--model", type=str, default="yolo11s-seg.pt", help="YOLO weights (yolo11s.pt or yolo11s-seg.pt)")
     parser.add_argument("--conf", type=float, default=0.35, help="Confidence threshold")
     parser.add_argument("--iou", type=float, default=0.5, help="IoU threshold for NMS")
-    parser.add_argument("--imgsz", type=int, default=640, help="Inference size (longer side)")
-    parser.add_argument("--device", type=str, default="cuda", help="Device: cpu/cuda/cuda:0 (auto if None)")
-    parser.add_argument("--use_masks", action="store_true", help="Draw instance masks (requires *-seg.pt model)")
-    parser.add_argument("--stride", type=int, default=1, help="Process every Nth frame (for quick tests)")
-    parser.add_argument("--sam_refine", default=False, action="store_true",
-                        help="Use SAM to refine masks from detector boxes (no tracking)")
-    parser.add_argument("--sam_checkpoint", type=str, default=None,
-                        help="Path to sam_vit_*.pth checkpoint (required if --sam-refine)")
-    parser.add_argument("--sam_model", type=str, default="vit_b",
-                        choices=["vit_b", "vit_l", "vit_h"], help="SAM model type")
+    parser.add_argument("--imgsz", type=int, default=640, help="Inference size")
+    parser.add_argument("--device", type=str, default="cuda", help="Device: cpu/cuda/cuda:0")
+    parser.add_argument("--use_masks", action="store_true", help="Draw instance masks")
+    parser.add_argument("--stride", type=int, default=1, help="Process every Nth frame")
+    parser.add_argument("--sam_refine", default=False, action="store_true", help="Use SAM to refine masks")
+    parser.add_argument("--sam_checkpoint", type=str, default=None, help="Path to sam_vit_*.pth checkpoint")
+    parser.add_argument("--sam_model", type=str, default="vit_b", choices=["vit_b", "vit_l", "vit_h"], help="SAM model type")
 
     return parser.parse_args()
 
@@ -48,7 +45,6 @@ def main() -> None:
         conf=args.conf,
         iou=args.iou,
         imgsz=args.imgsz,
-        use_masks=args.use_masks,
         device=args.device,
     )
 

@@ -18,7 +18,6 @@ class PersonDetector:
         conf: float = 0.35,
         iou: float = 0.5,
         imgsz: int = 640,
-        use_masks: bool = False,
         device: Optional[str] = None,
     ) -> None:
         """Initialize YOLO model.
@@ -28,14 +27,12 @@ class PersonDetector:
             conf: Пороговое значение достоверности.
             iou: Пороговое значение IoU для NMS.
             imgsz: Размер выходного изображения.
-            use_masks: .
             device: "cuda" / "cpu" / "cuda:0".
         """
         self.model = YOLO(model_path)
         self.conf = conf
         self.iou = iou
         self.imgsz = imgsz
-        self.use_masks = use_masks
         self.device = device
         # task = getattr(self.model.model, "task", None)
         # print(task)
