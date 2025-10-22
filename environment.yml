@@ -10,5 +10,4 @@ dependencies:
       - opencv-python>=4.8.0
       - numpy>=1.23.0
       - tqdm>=4.66.0
-      - huggingface_hub>=0.24.0
 

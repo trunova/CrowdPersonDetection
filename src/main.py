@@ -27,14 +27,14 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--conf", type=float, default=0.35, help="Confidence threshold")
     parser.add_argument("--iou", type=float, default=0.5, help="IoU threshold for NMS")
     parser.add_argument("--imgsz", type=int, default=640, help="Inference size (longer side)")
-    parser.add_argument("--device", type=str, default="cpu", help="Device: cpu/cuda/cuda:0 (auto if None)")
+    parser.add_argument("--device", type=str, default="cuda", help="Device: cpu/cuda/cuda:0 (auto if None)")
     parser.add_argument("--use_masks", action="store_true", help="Draw instance masks (requires *-seg.pt model)")
     parser.add_argument("--stride", type=int, default=1, help="Process every Nth frame (for quick tests)")
-    parser.add_argument("--sam-refine", default=False, action="store_true",
+    parser.add_argument("--sam_refine", default=False, action="store_true",
                         help="Use SAM to refine masks from detector boxes (no tracking)")
-    parser.add_argument("--sam-checkpoint", type=str, default=None,
+    parser.add_argument("--sam_checkpoint", type=str, default=None,
                         help="Path to sam_vit_*.pth checkpoint (required if --sam-refine)")
-    parser.add_argument("--sam-model", type=str, default="vit_b",
+    parser.add_argument("--sam_model", type=str, default="vit_b",
                         choices=["vit_b", "vit_l", "vit_h"], help="SAM model type")
 
     return parser.parse_args()
@@ -74,7 +74,6 @@ def main() -> None:
                 continue
 
             res = detector.predict(frame)
-            # print(args.use_masks)
 
             sam_refiner = None
             if args.sam_refine:
@@ -104,7 +103,8 @@ def main() -> None:
                                              res.boxes.conf.cpu().numpy(),
                                              res.masks.data.cpu().numpy()):
                     label = f"person {conf:.2f}"
-                    draw_transparent_mask(frame, m.astype(np.uint8), color=(60, 160, 255), alpha=0.45)
+                    m_bin = (m > 0.65).astype(np.uint8)
+                    draw_transparent_mask(frame, m_bin, color=(60, 160, 255), alpha=0.45)
                     draw_bbox_with_label(frame, box, label, color=(60, 160, 255))
             else:
                 # Boxes only
